@@ -2,8 +2,8 @@
 layout: default
 ---
 
-# > Jace Yaborough
-**Computer Science Student @ Baylor University** *Focused on Software Development & Cybersecurity Foundations*
+#Jace Yaborough
+**Computer Science Student @ Baylor University** *Focused on Cybersecurity and software development*
 
 [LinkedIn](https://linkedin.com/in/jace-yarborough-522b6429a) | [GitHub](https://github.com/Jaceyar) | [Email](jyarborough.tech@gmail.com)
 
@@ -19,7 +19,8 @@ I am a Computer Science student at Baylor University with a passion for cybersec
 * **Programming:** C++, Python, 8086 Assembly
 * **Scripting & Automation:** Bash, Python
 * **Web & Docs:** HTML, CSS, Markdown
-* **Tools:** Git/GitHub, Linux CLI, VS Code
+* **Tools:** Git/GitHub, VS Code, AWS, Linux CLI
+* **Security Tools:** Ghidra, Burp-Suite, pfSense, Metasploitable, Nmap, etc...
 
 
 ---
