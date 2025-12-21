@@ -1,10 +1,11 @@
+- - - 
+- - - 
+@import "{{ site.theme }}";
 
-   @import "{{ site.theme }}";
+header a#a-title {
+  display: none !important;
+}
 
-   header a#a-title {
-     display: none !important;
-   }
-
-   header .btn {
-     display: none !important;
-   }
+header .btn {
+  display: none !important;
+}
