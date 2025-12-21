@@ -11,23 +11,23 @@ Computer Science student passionate about cybersecurity and secure software deve
 Computer Science student at Baylor University specializing in cybersecurity.
 
 **What I Do:**
->> Low-level systems programming and backend development
->> Automation through scripts and tooling
->> Offensive security and penetration testing
->> CTF competitions and security challenges
+&gt;&gt; Low-level systems programming and backend development  
+&gt;&gt; Automation through scripts and tooling  
+&gt;&gt; Offensive security and penetration testing  
+&gt;&gt; CTF competitions and security challenges  
 
 **Experience:**
->> Previous internships focused on automation
->> Personal projects in cybersecurity and system design
+&gt;&gt; Previous internships focused on automation  
+&gt;&gt; Personal projects in cybersecurity and system design  
 ...
 
 **Programming Language:**  
->> C++
->> Python
->> 8086 Assembly
->> Bash
+&gt;&gt; C++  
+&gt;&gt; Python  
+&gt;&gt; 8086 Assembly  
+&gt;&gt; Bash  
   
 **Scripting Language:**  
->> Markdown
->> HTML
->> CSS
+&gt;&gt; Markdown  
+&gt;&gt; HTML  
+&gt;&gt; CSS  
