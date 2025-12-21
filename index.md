@@ -34,20 +34,20 @@ I am a Computer Science student at Baylor University with a passion for cybersec
 ---
 
 ## Academic Focus & Projects
+* [Cybersecurity HomeLab](https://github.com/JaceYar/home-lab-portfolio)
+  * Constructed a perosnal home lab for testing defensive and offensive security concepts and tooling. Help develop networking skills 
+* Raspi Pico Network Sniffer
+  
 
-
-
-### **Software Development (C++ / Python)**
-* Applying object-oriented programming (OOP) principles to build efficient, clean code.
-* Focusing on secure coding practices to prevent common vulnerabilities during the development phase.
 
 ---
 
-## Learning Path (2024-2025)
+## Cyber Competitions
+* Placed top 20% in the nation for National Cyber League (NCL)
+* Placed top 8% in National Cyber League Team Game (NCL)
+* TryHackMe 2025 Industrial Intrusion CTF 
 
-* **Cybersecurity Fundamentals:** Currently exploring Network Security and Linux Hardening.
-* **CTF Preparation:** Solving challenges on platforms like **TryHackMe** and **OverTheWire** to build hands-on offensive security skills.
-* **Automation:** Using Python to solve logic problems and automate simple file-system tasks.
+
 
 ---
 
