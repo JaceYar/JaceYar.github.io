@@ -5,7 +5,7 @@ layout: default
 # > Jace Yaborough
 **Computer Science Student @ Baylor University** *Focused on Software Development & Cybersecurity Foundations*
 
-[LinkedIn](https://linkedin.com/in/yourusername) | [GitHub](https://github.com/yourusername) | [Email](mailto:your@email.com)
+[LinkedIn](https://linkedin.com/in/jace-yarborough-522b6429a) | [GitHub](https://github.com/Jaceyar) | [Email](jyarborough.tech@gmail.com)
 
 ---
 
