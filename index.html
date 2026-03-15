@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jace Yarborough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:          #0e0c09;
+    --bg2:         #161310;
+    --bg3:         #1f1b16;
+    --bg4:         #272219;
+    --tan:         #c8a96e;
+    --tan-dim:     #8a7048;
+    --tan-pale:    #e8d5a8;
+    --olive2:      #8fa04d;
+    --text:        #b5a882;
+    --text-bright: #ddd0aa;
+    --muted:       #5a5140;
+    --border:      rgba(200,169,110,0.13);
+    --border2:     rgba(200,169,110,0.07);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* scanlines */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px);
+    pointer-events: none; z-index: 999;
+  }
+
+  /* dot grid */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: radial-gradient(circle, rgba(200,169,110,0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.9rem 3rem;
+    background: rgba(14,12,9,0.93);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border2);
+  }
+  .nav-logo { font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; color: var(--tan); letter-spacing: 0.08em; }
+  .nav-logo em { color: var(--muted); font-style: normal; }
+  nav ul { display: flex; gap: 2rem; list-style: none; }
+  nav a { font-family: 'Share Tech Mono', monospace; font-size: 0.66rem; color: var(--muted); text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.2s; }
+  nav a:hover { color: var(--tan); }
+
+  /* ── SHARED ── */
+  .container { position: relative; z-index: 1; max-width: 1060px; margin: 0 auto; padding: 0 2rem; }
+  .sec-divider { border: none; border-top: 1px solid var(--border2); margin: 0; }
+
+  .section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.63rem; color: var(--tan-dim);
+    letter-spacing: 0.25em; text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-label::before { content: '//'; color: var(--muted); }
+
+  h2.section-title {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 700; color: var(--tan-pale);
+    margin-bottom: 3rem; letter-spacing: 0.02em; line-height: 1.1;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 4rem;
+    padding: 8rem 2rem 4rem;
+    position: relative; z-index: 1;
+    max-width: 1060px; margin: 0 auto;
+  }
+
+  .hero-left { display: flex; flex-direction: column; }
+
+  .hero-mono {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem; color: var(--tan-dim);
+    letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 1.25rem;
+    opacity: 0; animation: fadeUp 0.5s 0.1s forwards;
+  }
+
+  h1.hero-name {
+    font-size: clamp(3.2rem, 6vw, 5.5rem);
+    font-weight: 700; line-height: 0.95;
+    letter-spacing: 0.02em; color: var(--tan-pale);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    opacity: 0; animation: fadeUp 0.6s 0.2s forwards;
+  }
+
+  .hero-tagline {
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    color: var(--tan);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.75rem;
+    opacity: 0; animation: fadeUp 0.6s 0.35s forwards;
+  }
+
+  .hero-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem; color: var(--muted);
+    letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 2.5rem;
+    opacity: 0; animation: fadeUp 0.6s 0.45s forwards;
+  }
+
+  .hero-links {
+    display: flex; gap: 0.75rem; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.6s 0.6s forwards;
+  }
+
+  .btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+    text-decoration: none; padding: 0.65rem 1.4rem;
+    transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
+    border: 1px solid transparent;
+  }
+  .btn-primary { background: var(--tan); color: var(--bg); font-weight: 700; border-color: var(--tan); }
+  .btn-primary:hover { background: var(--tan-pale); border-color: var(--tan-pale); }
+  .btn-outline { border-color: var(--border); color: var(--text); }
+  .btn-outline:hover { border-color: var(--tan-dim); color: var(--tan); }
+
+  /* hero right — big stats */
+  .hero-right {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    opacity: 0; animation: fadeUp 0.7s 0.5s forwards;
+  }
+
+  .hero-stat {
+    background: var(--bg2);
+    padding: 2rem 1.75rem;
+    transition: background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-stat::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px; background: var(--tan);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .hero-stat:hover { background: var(--bg3); }
+  .hero-stat:hover::before { transform: scaleX(1); }
+
+  .hero-stat-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 2.4rem; color: var(--tan);
+    line-height: 1; margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  .hero-stat-label {
+    font-size: 0.85rem; color: var(--muted);
+    font-weight: 600; letter-spacing: 0.02em;
+    line-height: 1.3;
+  }
+
+  /* ── ABOUT ── */
+  #about { padding: 7rem 0; }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem; align-items: start;
+  }
+
+  .about-text p { color: var(--text); margin-bottom: 1.25rem; font-size: 1.08rem; }
+
+  .about-details {
+    display: flex; flex-direction: column; gap: 1px;
+    background: var(--border2); border: 1px solid var(--border2);
+  }
+
+  .about-detail-row {
+    background: var(--bg2);
+    padding: 1.1rem 1.5rem;
+    display: grid; grid-template-columns: 120px 1fr;
+    gap: 1rem; align-items: center;
+    transition: background 0.2s;
+  }
+  .about-detail-row:hover { background: var(--bg3); }
+
+  .detail-key {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem; color: var(--tan-dim);
+    letter-spacing: 0.15em; text-transform: uppercase;
+  }
+  .detail-val { font-size: 0.95rem; color: var(--text-bright); font-weight: 600; }
+
+  /* ── SKILLS ── */
+  #skills { padding: 7rem 0; }
+
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1px; background: var(--border2); border: 1px solid var(--border2);
+  }
+  .skill-group { background: var(--bg2); padding: 1.5rem; transition: background 0.2s; }
+  .skill-group:hover { background: var(--bg3); }
+  .skill-group-title { font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; color: var(--tan-dim); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1rem; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tag { font-family: 'Share Tech Mono', monospace; font-size: 0.67rem; color: var(--text); background: var(--bg3); border: 1px solid var(--border2); padding: 0.2rem 0.55rem; transition: all 0.2s; }
+  .skill-group:hover .tag { border-color: rgba(200,169,110,0.2); color: var(--tan-pale); }
+
+  /* ── EXPERIENCE ── */
+  #experience { padding: 7rem 0; }
+
+  .exp-card {
+    border: 1px solid var(--border2); background: var(--bg2);
+    padding: 2.5rem 2.5rem 2.5rem 3rem;
+    position: relative; overflow: hidden; transition: border-color 0.3s;
+  }
+  .exp-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--tan); }
+  .exp-card:hover { border-color: var(--border); }
+
+  .exp-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 0.4rem; }
+  .exp-role { font-size: 1.3rem; font-weight: 700; color: var(--tan-pale); text-transform: uppercase; letter-spacing: 0.03em; }
+  .exp-date { font-family: 'Share Tech Mono', monospace; font-size: 0.66rem; color: var(--tan); background: rgba(200,169,110,0.08); border: 1px solid rgba(200,169,110,0.18); padding: 0.3rem 0.75rem; white-space: nowrap; letter-spacing: 0.1em; }
+  .exp-company { font-family: 'Share Tech Mono', monospace; font-size: 0.74rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 1.75rem; }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .exp-bullets li { padding-left: 1.4rem; position: relative; color: var(--text); font-size: 1rem; font-weight: 500; }
+  .exp-bullets li::before { content: '>'; position: absolute; left: 0; color: var(--tan-dim); font-family: 'Share Tech Mono', monospace; }
+  .hi { color: var(--olive2); font-weight: 700; }
+
+  /* ── PROJECTS ── */
+  #projects { padding: 7rem 0; }
+
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(440px, 1fr)); gap: 1.5rem; }
+
+  .project-card { border: 1px solid var(--border2); background: var(--bg2); overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
+  .project-card:hover { border-color: var(--border); transform: translateY(-3px); }
+
+  .img-upload-area {
+    width: 100%; height: 230px;
+    border-bottom: 1px solid var(--border2);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer; background: var(--bg3); position: relative; overflow: hidden; transition: background 0.2s;
+  }
+  .img-upload-area:hover { background: var(--bg4); }
+  .img-upload-area::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(200,169,110,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(200,169,110,0.04) 1px, transparent 1px); background-size: 20px 20px; }
+  .img-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .upload-text { font-family: 'Share Tech Mono', monospace; font-size: 0.66rem; color: var(--tan-dim); letter-spacing: 0.1em; text-align: center; line-height: 2.2; position: relative; z-index: 1; pointer-events: none; }
+  .upload-icon { font-size: 1.2rem; color: var(--tan-dim); margin-bottom: 0.4rem; position: relative; z-index: 1; }
+  .img-upload-area img.preview { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
+
+  .project-img-placeholder { width: 100%; height: 230px; background: var(--bg3); border-bottom: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .project-img-placeholder::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(200,169,110,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(200,169,110,0.04) 1px, transparent 1px); background-size: 20px 20px; }
+  .placeholder-text { font-family: 'Share Tech Mono', monospace; font-size: 0.63rem; color: var(--muted); text-align: center; line-height: 2.4; letter-spacing: 0.1em; position: relative; z-index: 1; }
+
+  .project-body { padding: 1.75rem; }
+  .project-title { font-size: 1.15rem; font-weight: 700; color: var(--tan-pale); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .project-desc { font-size: 0.95rem; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.65; font-weight: 500; }
+  .project-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
+  .project-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+  .project-link { font-family: 'Share Tech Mono', monospace; font-size: 0.67rem; color: var(--tan); text-decoration: none; letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.35rem; transition: gap 0.2s, color 0.2s; }
+  .project-link:hover { gap: 0.65rem; color: var(--tan-pale); }
+
+  /* ── COMPETITIONS ── */
+  #competitions { padding: 7rem 0; }
+
+  .comp-list { display: flex; flex-direction: column; gap: 1px; background: var(--border2); border: 1px solid var(--border2); }
+
+  .comp-item {
+    background: var(--bg2); padding: 1.5rem 2rem;
+    display: flex; align-items: center; gap: 1.5rem;
+    transition: background 0.2s;
+  }
+  .comp-item:hover { background: var(--bg3); }
+
+  .comp-item.featured { background: var(--bg3); border-left: 3px solid var(--tan); }
+  .comp-item.featured:hover { background: var(--bg4); }
+
+  .comp-rank { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--olive2); background: rgba(107,124,58,0.12); border: 1px solid rgba(107,124,58,0.25); padding: 0.3rem 0.75rem; white-space: nowrap; min-width: 100px; text-align: center; letter-spacing: 0.06em; }
+  .comp-rank.captain { color: var(--tan); background: rgba(200,169,110,0.1); border-color: rgba(200,169,110,0.25); }
+
+  .comp-info { flex: 1; }
+  .comp-name { font-size: 1rem; color: var(--text-bright); font-weight: 600; letter-spacing: 0.02em; }
+  .comp-detail { font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; color: var(--tan-dim); letter-spacing: 0.08em; margin-top: 0.2rem; }
+
+  .comp-year { font-family: 'Share Tech Mono', monospace; font-size: 0.66rem; color: var(--muted); letter-spacing: 0.1em; }
+
+  /* ── EDUCATION ── */
+  #education { padding: 7rem 0; }
+
+  .edu-card { border: 1px solid var(--border2); background: var(--bg2); padding: 2.5rem 3rem; display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; position: relative; overflow: hidden; }
+  .edu-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--tan); }
+  .edu-school { font-size: 1.6rem; font-weight: 700; color: var(--tan-pale); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.3rem; }
+  .edu-degree { font-family: 'Share Tech Mono', monospace; font-size: 0.76rem; color: var(--muted); letter-spacing: 0.08em; margin-bottom: 1rem; }
+  .cert-badge { display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'Share Tech Mono', monospace; font-size: 0.66rem; color: var(--olive2); background: rgba(107,124,58,0.1); border: 1px solid rgba(107,124,58,0.25); padding: 0.35rem 0.9rem; letter-spacing: 0.08em; }
+  .cert-badge::before { content: '●'; font-size: 0.45rem; animation: blink 1.5s ease-in-out infinite; }
+  .edu-grad { text-align: right; }
+  .edu-grad-label { font-family: 'Share Tech Mono', monospace; font-size: 0.58rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 0.2rem; }
+  .edu-grad-year { font-family: 'Share Tech Mono', monospace; font-size: 2.5rem; color: var(--tan); line-height: 1; }
+
+  /* ── CERTIFICATIONS ── */
+  #certifications { padding: 7rem 0; }
+  .cert-list { display: flex; flex-direction: column; gap: 1px; background: var(--border2); border: 1px solid var(--border2); }
+  .cert-card { background: var(--bg2); padding: 1.75rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; transition: background 0.2s; }
+  .cert-card:hover { background: var(--bg3); }
+  .cert-card-name { font-size: 1.1rem; font-weight: 700; color: var(--tan-pale); letter-spacing: 0.02em; margin-bottom: 0.3rem; }
+  .cert-card-issuer { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; }
+  .cert-card-badge { font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; letter-spacing: 0.12em; padding: 0.35rem 0.9rem; white-space: nowrap; display: flex; align-items: center; gap: 0.4rem; }
+  .cert-card-badge.earned { color: var(--tan); background: rgba(200,169,110,0.1); border: 1px solid rgba(200,169,110,0.25); }
+  .cert-card-badge.inprogress { color: var(--olive2); background: rgba(107,124,58,0.1); border: 1px solid rgba(107,124,58,0.25); }
+  .cert-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--olive2); animation: blink 1.5s ease-in-out infinite; display: inline-block; }
+
+  /* ── CONTACT ── */
+  #contact { padding: 7rem 0 5rem; }
+
+  .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .contact-cta { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 700; color: var(--tan-pale); line-height: 1.1; letter-spacing: 0.03em; text-transform: uppercase; margin-bottom: 1rem; }
+  .contact-cta span { color: var(--tan); }
+  .contact-sub { color: var(--muted); font-size: 1rem; font-weight: 500; }
+  .contact-links { display: flex; flex-direction: column; gap: 1px; background: var(--border2); border: 1px solid var(--border2); }
+  .contact-link { background: var(--bg2); padding: 1.2rem 1.75rem; display: flex; align-items: center; justify-content: space-between; text-decoration: none; transition: background 0.2s; gap: 1rem; }
+  .contact-link:hover { background: var(--bg3); }
+  .contact-link-label { font-family: 'Share Tech Mono', monospace; font-size: 0.58rem; color: var(--muted); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 0.2rem; }
+  .contact-link-value { font-size: 1rem; color: var(--tan-pale); font-weight: 600; }
+  .contact-arrow { color: var(--tan-dim); font-family: 'Share Tech Mono', monospace; transition: transform 0.2s, color 0.2s; }
+  .contact-link:hover .contact-arrow { transform: translateX(4px); color: var(--tan); }
+
+  /* ── FOOTER ── */
+  footer { position: relative; z-index: 1; border-top: 1px solid var(--border2); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; max-width: 1060px; margin: 0 auto; }
+  footer p { font-family: 'Share Tech Mono', monospace; font-size: 0.58rem; color: var(--muted); letter-spacing: 0.1em; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes blink  { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    #hero { grid-template-columns: 1fr; min-height: auto; padding-bottom: 5rem; }
+    .hero-right { margin-top: 1rem; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 0.9rem 1.25rem; }
+    nav ul { gap: 1rem; }
+    .about-grid, .contact-inner, .edu-card { grid-template-columns: 1fr; gap: 2rem; }
+    .edu-grad { text-align: left; }
+    .projects-grid { grid-template-columns: 1fr; }
+    #hero { padding: 7rem 1.25rem 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">JY<em>.exe</em></div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Exp</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-left">
+    <p class="hero-mono">CS Student &nbsp;&middot;&nbsp; Baylor University &nbsp;&middot;&nbsp; Class of '27</p>
+    <h1 class="hero-name">Jace<br>Yarborough</h1>
+    <p class="hero-tagline">Network Obsessed. From building defenses to breaking them.</p>
+    <p class="hero-sub">Cybersecurity &nbsp;&middot;&nbsp; Networking &nbsp;&middot;&nbsp; Software Dev</p>
+    <div class="hero-links">
+      <a href="mailto:jyarborough.tech@gmail.com" class="btn btn-primary">Get in touch</a>
+      <a href="https://github.com/Jaceyar" target="_blank" class="btn btn-outline">GitHub ↗</a>
+      <a href="https://linkedin.com/in/jace-yarborough-522b6429a" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-stat">
+      <div class="hero-stat-num">Top 8%</div>
+      <div class="hero-stat-label">NCL Team Game nationally</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">95%</div>
+      <div class="hero-stat-label">Lab creation time reduced at IAM internship</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">Captain</div>
+      <div class="hero-stat-label">Baylor HTB Hack The Madness team</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">Sec+</div>
+      <div class="hero-stat-label">CompTIA Security+ in progress</div>
+    </div>
+  </div>
+</div>
+
+<hr class="sec-divider">
+
+<!-- ABOUT -->
+<section id="about"><div class="container">
+  <p class="section-label">01 &mdash; About</p>
+  <h2 class="section-title">Who I am</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm a Computer Science student at Baylor University obsessed with how networks are built, secured, and exploited. My focus spans cybersecurity, networking fundamentals, and software development.</p>
+      <p>I've taken that obsession beyond the classroom — building a personal home lab, captaining Baylor's Hack The Box team, placing top 8% nationally in the NCL, and shipping real automation at an IAM startup.</p>
+      <p>I'm actively seeking internship or entry-level roles in cybersecurity, networking, or software. I work hard, learn fast, and don't stop until things work.</p>
+    </div>
+    <div class="about-details">
+      <div class="about-detail-row">
+        <span class="detail-key">School</span>
+        <span class="detail-val">Baylor University</span>
+      </div>
+      <div class="about-detail-row">
+        <span class="detail-key">Degree</span>
+        <span class="detail-val">B.S. Computer Science</span>
+      </div>
+      <div class="about-detail-row">
+        <span class="detail-key">Graduating</span>
+        <span class="detail-val">2027</span>
+      </div>
+      <div class="about-detail-row">
+        <span class="detail-key">Focus</span>
+        <span class="detail-val">Cybersecurity &amp; Networking</span>
+      </div>
+      <div class="about-detail-row">
+        <span class="detail-key">Cert</span>
+        <span class="detail-val">CompTIA Sec+ (in progress)</span>
+      </div>
+      <div class="about-detail-row">
+        <span class="detail-key">Status</span>
+        <span class="detail-val" style="color:var(--olive2)">Open to opportunities</span>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<hr class="sec-divider">
+
+<!-- SKILLS -->
+<section id="skills"><div class="container">
+  <p class="section-label">02 &mdash; Skills</p>
+  <h2 class="section-title">Technical toolkit</h2>
+  <div class="skills-grid">
+    <div class="skill-group">
+      <p class="skill-group-title">Languages</p>
+      <div class="skill-tags">
+        <span class="tag">C++</span><span class="tag">Python</span><span class="tag">Java</span><span class="tag">x86 Assembly</span><span class="tag">Bash</span><span class="tag">HTML/CSS</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <p class="skill-group-title">Security</p>
+      <div class="skill-tags">
+        <span class="tag">Ghidra</span><span class="tag">Burp Suite</span><span class="tag">Nmap</span><span class="tag">Metasploit</span><span class="tag">pfSense</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <p class="skill-group-title">Infrastructure</p>
+      <div class="skill-tags">
+        <span class="tag">AWS</span><span class="tag">Linux CLI</span><span class="tag">Proxmox</span><span class="tag">Docker</span><span class="tag">Networking</span><span class="tag">AWS Secrets Mgr</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <p class="skill-group-title">Tools</p>
+      <div class="skill-tags">
+        <span class="tag">Git/GitHub</span><span class="tag">VS Code</span><span class="tag">Jira</span><span class="tag">Shortcut</span><span class="tag">Virtualization</span><span class="tag">Markdown</span>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<hr class="sec-divider">
+
+<!-- EXPERIENCE -->
+<section id="experience"><div class="container">
+  <p class="section-label">03 &mdash; Experience</p>
+  <h2 class="section-title">Where I've worked</h2>
+
+  <div class="exp-card" style="margin-bottom:1.5rem">
+    <div class="exp-header">
+      <div class="exp-role">Undergraduate Research Assistant</div>
+      <div class="exp-date">Feb 2026 &mdash; Present</div>
+    </div>
+    <div class="exp-company">// Baylor University &nbsp;&middot;&nbsp; Waco, TX</div>
+    <ul class="exp-bullets">
+      <li>Analyzed and verified Proof-of-Concept (PoC) exploits for GCC compiler optimization bugs, documenting miscompilation instances that could lead to security vulnerabilities</li>
+      <li>Performed literature reviews and technical deep-dives into automated software testing and mutation-based fuzzing methodologies, including study of tools like Csmith</li>
+    </ul>
+  </div>
+
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-role">Product Training Intern</div>
+      <div class="exp-date">2025</div>
+    </div>
+    <div class="exp-company">// Identity &amp; Access Management Startup</div>
+    <ul class="exp-bullets">
+      <li>Developed automation scripts to provision and manage lab environments at scale</li>
+      <li>Built grading automation that reduced lab creation time by <span class="hi">95%</span></li>
+      <li>Integrated AWS Secrets Manager into automation pipeline to eliminate hardcoded credentials</li>
+    </ul>
+  </div>
+</div></section>
+
+<hr class="sec-divider">
+
+<!-- PROJECTS -->
+<section id="projects"><div class="container">
+  <p class="section-label">04 &mdash; Projects</p>
+  <h2 class="section-title">Things I've built</h2>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div class="img-upload-area" id="homelabArea" title="Click to upload your home lab photo">
+        <input type="file" accept="image/*" id="homelabInput" onchange="handleImg('homelabInput','homelabArea')">
+        <div class="upload-icon">⬆</div>
+        <div class="upload-text">
+          CLICK TO ADD HOME LAB PHOTO<br>
+          <span style="color:var(--muted);font-size:0.58rem">JPG &middot; PNG &middot; WEBP</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-title">Cybersecurity Home Lab</div>
+        <p class="project-desc">Personal lab for testing defensive and offensive security concepts. Network segmentation, vulnerability scanning, traffic analysis, and hands-on tooling practice.</p>
+        <div class="project-footer">
+          <div class="project-tags">
+            <span class="tag">pfSense</span><span class="tag">Nmap</span><span class="tag">Metasploit</span><span class="tag">Networking</span>
+          </div>
+          <a href="https://github.com/JaceYar/home-lab-portfolio" target="_blank" class="project-link">View on GitHub →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-img-placeholder">
+        <div class="placeholder-text">RASPI PICO<br>NETWORK SNIFFER<br><span style="font-size:0.55rem;color:var(--muted)">HARDWARE PROJECT</span></div>
+      </div>
+      <div class="project-body">
+        <div class="project-title">Raspi Pico Network Sniffer</div>
+        <p class="project-desc">Low-level network sniffer on the Raspberry Pi Pico. Captures and analyzes raw packet data, combining hardware-level programming with practical networking concepts.</p>
+        <div class="project-footer">
+          <div class="project-tags">
+            <span class="tag">Raspberry Pi</span><span class="tag">C++</span><span class="tag">Networking</span><span class="tag">Hardware</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div></section>
+
+<hr class="sec-divider">
+
+<!-- COMPETITIONS -->
+<section id="competitions"><div class="container">
+  <p class="section-label">05 &mdash; Competitions</p>
+  <h2 class="section-title">CTF &amp; cyber competitions</h2>
+  <div class="comp-list">
+
+    <div class="comp-item featured">
+      <div class="comp-rank captain">TOP 5%</div>
+      <div class="comp-info">
+        <div class="comp-name">TryHackMe &mdash; Global Ranking</div>
+        <div class="comp-detail">Top 5% of all users worldwide</div>
+      </div>
+      <div class="comp-year">2025</div>
+    </div>
+
+    <div class="comp-item featured">
+      <div class="comp-rank captain">CAPTAIN</div>
+      <div class="comp-info">
+        <div class="comp-name">Hack The Box &mdash; Hack The Madness CTF</div>
+        <div class="comp-detail">Baylor University Team Captain</div>
+      </div>
+      <div class="comp-year">2025</div>
+    </div>
+
+    <div class="comp-item">
+      <div class="comp-rank">TOP 8%</div>
+      <div class="comp-info">
+        <div class="comp-name">National Cyber League (NCL) &mdash; Team Game</div>
+      </div>
+      <div class="comp-year">2025</div>
+    </div>
+
+    <div class="comp-item">
+      <div class="comp-rank">TOP 20%</div>
+      <div class="comp-info">
+        <div class="comp-name">National Cyber League (NCL) &mdash; Individual</div>
+      </div>
+      <div class="comp-year">2025</div>
+    </div>
+
+    <div class="comp-item">
+      <div class="comp-rank">PARTICIPANT</div>
+      <div class="comp-info">
+        <div class="comp-name">TryHackMe Industrial Intrusion CTF</div>
+      </div>
+      <div class="comp-year">2025</div>
+    </div>
+
+    <div class="comp-item">
+      <div class="comp-rank">PARTICIPANT</div>
+      <div class="comp-info">
+        <div class="comp-name">TryHackMe Valentine's Day CTF</div>
+      </div>
+      <div class="comp-year">2025</div>
+    </div>
+
+  </div>
+</div></section>
+
+<hr class="sec-divider">
+
+<!-- EDUCATION -->
+<section id="education"><div class="container">
+  <p class="section-label">06 &mdash; Education</p>
+  <h2 class="section-title">Where I study</h2>
+  <div class="edu-card">
+    <div>
+      <div class="edu-school">Baylor University</div>
+      <div class="edu-degree">// B.S. in Computer Science</div>
+
+    </div>
+    <div class="edu-grad">
+      <div class="edu-grad-label">Expected</div>
+      <div class="edu-grad-year">2027</div>
+    </div>
+  </div>
+</div></section>
+
+<hr class="sec-divider">
+
+<!-- CERTIFICATIONS -->
+<section id="certifications"><div class="container">
+  <p class="section-label">07 &mdash; Certifications</p>
+  <h2 class="section-title">Certifications</h2>
+  <div class="cert-list">
+
+    <div class="cert-card">
+      <div class="cert-card-left">
+        <div class="cert-card-name">Google Cybersecurity Certificate</div>
+        <div class="cert-card-issuer">// Google &nbsp;&middot;&nbsp; Coursera</div>
+      </div>
+      <div class="cert-card-badge earned">EARNED</div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-card-left">
+        <div class="cert-card-name">CompTIA Security+</div>
+        <div class="cert-card-issuer">// CompTIA</div>
+      </div>
+      <div class="cert-card-badge inprogress"><span class="cert-dot"></span>IN PROGRESS</div>
+    </div>
+
+  </div>
+</div></section>
+
+<hr class="sec-divider">
+
+<!-- CONTACT -->
+<section id="contact"><div class="container">
+  <p class="section-label">08 &mdash; Contact</p>
+  <div class="contact-inner">
+    <div>
+      <h2 class="contact-cta">Let's work<br><span>together.</span></h2>
+      <p class="contact-sub">Open to internships and entry-level roles in cybersecurity, networking, and software. Let's talk.</p>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:jyarborough.tech@gmail.com" class="contact-link">
+        <div><div class="contact-link-label">Email</div><div class="contact-link-value">jyarborough.tech@gmail.com</div></div>
+        <div class="contact-arrow">→</div>
+      </a>
+      <a href="https://linkedin.com/in/jace-yarborough-522b6429a" target="_blank" class="contact-link">
+        <div><div class="contact-link-label">LinkedIn</div><div class="contact-link-value">/in/jace-yarborough</div></div>
+        <div class="contact-arrow">→</div>
+      </a>
+      <a href="https://github.com/Jaceyar" target="_blank" class="contact-link">
+        <div><div class="contact-link-label">GitHub</div><div class="contact-link-value">github.com/Jaceyar</div></div>
+        <div class="contact-arrow">→</div>
+      </a>
+    </div>
+  </div>
+</div></section>
+
+<footer>
+  <p>&copy; 2025 Jace Yarborough</p>
+  <p>Static HTML &mdash; GitHub Pages</p>
+</footer>
+
+<script>
+  function handleImg(inputId, areaId) {
+    const file = document.getElementById(inputId).files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const area = document.getElementById(areaId);
+      area.querySelectorAll('.upload-icon, .upload-text').forEach(el => el.style.display = 'none');
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      img.className = 'preview';
+      area.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.exp-card, .project-card, .comp-item, .edu-card, .skill-group, .hero-stat, .about-detail-row').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(12px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease, background 0.2s, border-color 0.3s';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
