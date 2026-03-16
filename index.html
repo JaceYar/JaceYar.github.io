@@ -264,14 +264,16 @@
   .project-card:hover { border-color: var(--border); transform: translateY(-3px); }
 
   /* rack SVG image area */
-  .project-rack-img {
+.project-rack-img {
     width: 100%;
+    height: 230px;
+    object-fit: contain;
+    object-position: center;
     display: block;
     border-bottom: 1px solid var(--border2);
-    background: var(--bg2);
-    /* dot grid to match placeholder */
-    background-image: radial-gradient(circle, rgba(200,169,110,0.05) 1px, transparent 1px);
-    background-size: 28px 28px;
+    background-color: #161310;
+    background-image: linear-gradient(rgba(200,169,110,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(200,169,110,0.04) 1px, transparent 1px);
+    background-size: 20px 20px;
   }
 
   /* raspi placeholder — tall to match rack */
