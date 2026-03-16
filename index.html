@@ -258,26 +258,36 @@
   /* ── PROJECTS ── */
   #projects { padding: 7rem 0; }
 
-  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(440px, 1fr)); gap: 1.5rem; }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(440px, 1fr)); gap: 1.5rem; align-items: start; }
 
   .project-card { border: 1px solid var(--border2); background: var(--bg2); overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
   .project-card:hover { border-color: var(--border); transform: translateY(-3px); }
 
-  .img-upload-area {
-    width: 100%; height: 230px;
+  /* rack SVG image area */
+  .project-rack-img {
+    width: 100%;
+    display: block;
     border-bottom: 1px solid var(--border2);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    cursor: pointer; background: var(--bg3); position: relative; overflow: hidden; transition: background 0.2s;
+    background: var(--bg2);
+    /* dot grid to match placeholder */
+    background-image: radial-gradient(circle, rgba(200,169,110,0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
   }
-  .img-upload-area:hover { background: var(--bg4); }
-  .img-upload-area::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(200,169,110,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(200,169,110,0.04) 1px, transparent 1px); background-size: 20px 20px; }
-  .img-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-  .upload-text { font-family: 'Share Tech Mono', monospace; font-size: 0.66rem; color: var(--tan-dim); letter-spacing: 0.1em; text-align: center; line-height: 2.2; position: relative; z-index: 1; pointer-events: none; }
-  .upload-icon { font-size: 1.2rem; color: var(--tan-dim); margin-bottom: 0.4rem; position: relative; z-index: 1; }
-  .img-upload-area img.preview { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
 
-  .project-img-placeholder { width: 100%; height: 230px; background: var(--bg3); border-bottom: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-  .project-img-placeholder::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(200,169,110,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(200,169,110,0.04) 1px, transparent 1px); background-size: 20px 20px; }
+  /* raspi placeholder — tall to match rack */
+  .project-img-placeholder {
+    width: 100%;
+    height: 230px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .project-img-placeholder::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(200,169,110,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(200,169,110,0.04) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
   .placeholder-text { font-family: 'Share Tech Mono', monospace; font-size: 0.63rem; color: var(--muted); text-align: center; line-height: 2.4; letter-spacing: 0.1em; position: relative; z-index: 1; }
 
   .project-body { padding: 1.75rem; }
@@ -372,6 +382,7 @@
     .edu-grad { text-align: left; }
     .projects-grid { grid-template-columns: 1fr; }
     #hero { padding: 7rem 1.25rem 4rem; }
+    .project-img-placeholder { height: 300px; }
   }
 </style>
 </head>
@@ -539,19 +550,19 @@
   <h2 class="section-title">Things I've built</h2>
   <div class="projects-grid">
 
-  <div class="project-card">
-    <img src="assets/homelab_wireframe.svg" alt="Home Lab Rack Diagram" style="width:100%; display:block; border-bottom:1px solid rgba(200,169,110,0.07);">
-    <div class="project-body">
-      <div class="project-title">Cybersecurity Home Lab</div>
-      <p class="project-desc">Personal lab for testing defensive and offensive security concepts. Network segmentation, vulnerability scanning, traffic analysis, and hands-on tooling practice.</p>
-      <div class="project-footer">
-        <div class="project-tags">
-          <span class="tag">pfSense</span><span class="tag">Nmap</span><span class="tag">Metasploit</span><span class="tag">Networking</span>
+    <div class="project-card">
+      <img src="assets/homelab_wireframe.svg" alt="Home Lab Rack Diagram" class="project-rack-img">
+      <div class="project-body">
+        <div class="project-title">Cybersecurity Home Lab</div>
+        <p class="project-desc">Personal lab for testing defensive and offensive security concepts. Network segmentation, vulnerability scanning, traffic analysis, and hands-on tooling practice.</p>
+        <div class="project-footer">
+          <div class="project-tags">
+            <span class="tag">pfSense</span><span class="tag">Nmap</span><span class="tag">Metasploit</span><span class="tag">Networking</span>
+          </div>
+          <a href="https://github.com/JaceYar/home-lab-portfolio" target="_blank" class="project-link">View on GitHub →</a>
         </div>
-        <a href="https://github.com/JaceYar/home-lab-portfolio" target="_blank" class="project-link">View on GitHub →</a>
       </div>
     </div>
-  </div>
 
     <div class="project-card">
       <div class="project-img-placeholder">
@@ -642,7 +653,6 @@
     <div>
       <div class="edu-school">Baylor University</div>
       <div class="edu-degree">// B.S. in Computer Science</div>
-
     </div>
     <div class="edu-grad">
       <div class="edu-grad-label">Expected</div>
@@ -711,21 +721,6 @@
 </footer>
 
 <script>
-  function handleImg(inputId, areaId) {
-    const file = document.getElementById(inputId).files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-      const area = document.getElementById(areaId);
-      area.querySelectorAll('.upload-icon, .upload-text').forEach(el => el.style.display = 'none');
-      const img = document.createElement('img');
-      img.src = e.target.result;
-      img.className = 'preview';
-      area.appendChild(img);
-    };
-    reader.readAsDataURL(file);
-  }
-
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
